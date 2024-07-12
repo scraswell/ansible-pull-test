@@ -42,6 +42,12 @@
       sgdisk -Z {{ installation_device }}
   changed_when: false
 
+- name: Execute partprobe
+  ansible.builtin.shell:
+    cmd: |
+      partprobe
+  changed_when: false
+
 - name: Set EFI partition info
   ansible.builtin.set_fact:
     efi_start_sector: "{{ start_sector | int }}"
