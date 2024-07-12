@@ -71,11 +71,11 @@
         echo "{{ root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
 
 - name: Set partition info
-    ansible.builtin.set_fact:
-      partition_info:
-        efi: "/dev/{{ installation_device }}1"
-        swap: "/dev/{{ installation_device }}2"
-        root: "/dev/{{ installation_device }}3"
+  ansible.builtin.set_fact:
+    partition_info:
+      efi: "/dev/{{ installation_device }}1"
+      swap: "/dev/{{ installation_device }}2"
+      root: "/dev/{{ installation_device }}3"
 
 - name: Format the partitions
   ansible.builtin.shell:
