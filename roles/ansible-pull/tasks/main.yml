@@ -50,17 +50,17 @@
 
 - name: Set EFI partition info
   ansible.builtin.set_fact:
-    efi_start_sector: "{{ start_sector | int }}"
-    efi_sectors: "{{ ((efi_size_bytes | int) / (installation_disk.sectorsize | int)) | int }}"
+    efi_start_sector: "{{ start_sector }}"
+    efi_sectors: "{{ ((efi_size_bytes | int) / (installation_disk.sectorsize | int)) }}"
 
 - name: Set swap partition info
   ansible.builtin.set_fact:
-    swap_start_sector: "{{ (efi_start_sector + efi_sectors) | int }}"
-    swap_sectors: "{{ ((swap_size_bytes | int) / (installation_disk.sectorsize | int)) | int }}"
+    swap_start_sector: "{{ (efi_start_sector | int) + (efi_sectors | int)) }}"
+    swap_sectors: "{{ ((swap_size_bytes | int) / (installation_disk.sectorsize | int)) }}"
 
 - name: Set root partition info
   ansible.builtin.set_fact:
-    root_start_sector: "{{ (swap_start_sector + swap_sectors) | int }}"
+    root_start_sector: "{{ ((swap_start_sector | int) + (swap_sectors | int)) }}"
 
 - name: Partition the device
   ansible.builtin.shell:
