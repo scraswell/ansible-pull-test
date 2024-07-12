@@ -5,3 +5,17 @@
       ansible.builtin.include_tasks: provision_installation_disk.yml
   tags:
     - prepare_installation_medium
+
+- name: Prepare for installation
+  block:
+    - name: Mount filesystems
+      ansible.builtin.include_tasks: mount_installation_medium.yml
+  tags:
+    - install_prep
+
+- name: Prepare for reboot
+  block:
+    - name: Unmount filesystems
+      ansible.builtin.include_tasks: unmount_installation_medium.yml
+  tags:
+    - reboot_prep

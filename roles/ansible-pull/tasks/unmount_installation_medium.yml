@@ -1,0 +1,7 @@
+---
+- name: Unmount devices
+  ansible.builtin.shell:
+    cmd: |
+      umount {{ partition_info.efi }} && \
+      umount {{ partition_info.root }} && \
+      swapoff {{ partition_info.swap }}

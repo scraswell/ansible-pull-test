@@ -1,0 +1,8 @@
+---
+- name: Mount devices
+  ansible.builtin.shell:
+    cmd: |
+      swapon {{ partition_info.swap }} && \
+      mount {{ partition_info.root }} /mnt && \
+      mkdir /mnt/boot && \
+      mount {{ partition_info.efi }} /mnt/boot
