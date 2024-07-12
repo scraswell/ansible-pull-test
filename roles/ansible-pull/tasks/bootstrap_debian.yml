@@ -1,4 +1,9 @@
 ---
+- name: Install debootstrap
+  ansible.builtin.shell:
+    cmd: |
+      pacman -S --noconfirm debootstrap
+
 - name: debootstrap
   ansible.builtin.shell:
     cmd: |
