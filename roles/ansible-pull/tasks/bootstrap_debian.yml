@@ -37,7 +37,7 @@
 - name: Install base packages
   ansible.builtin.shell:
     cmd: |
-      arch-chroot {{ bootstrap_dir }} apt -y --no-install-recommends {{ debian_base_packages | join(' ') }}
+      arch-chroot {{ bootstrap_dir }} apt -y --no-install-recommends install {{ debian_base_packages | join(' ') }}
   environment:
     DEBIAN_FRONTEND: noninteractive
 
