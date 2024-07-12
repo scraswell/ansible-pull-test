@@ -13,7 +13,22 @@
         {{ debian_code_name }} \
         /mnt
 
+- name: Configure sources.list
+  ansible.builtin.copy:
+    content: |
+      deb https://mirror.csclub.uwaterloo.ca/debian {{ debian_code_name }} main contrib non-free
+    dest: /etc/apt/sources.list
+    mode: 0644
+    owner: root
+    group: root
+
 - name: Install base packages
   ansible.builtin.shell:
     cmd: |
-      arch-chroot /mnt apt -y install {{ debian_base_packages | join(' ') }}
+      arch-chroot /mnt apt -y {{ command }}
+  loop:
+    - update
+    - upgrade
+    - install {{ debian_base_packages | join(' ') }}
+  env:
+    DEBIAN_FRONTEND: noninteractive
