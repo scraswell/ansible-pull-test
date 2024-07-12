@@ -42,22 +42,27 @@
       sgdisk -Z {{ installation_device }}
   changed_when: false
 
-- name: Set partition info
+- name: Set EFI partition info
   ansible.builtin.set_fact:
-    partition_info:
-      efi_start_sector: "{{ start_sector | int }}"
-      efi_sectors: "{{ ((efi_size_bytes | int) / (installation_disk.sectorsize | int)) | int }}"
-      swap_start_sector: "{{ (partition_info.efi_start_sector + partition_info.efi_sectors) | int }}"
-      swap_sectors: "{{ ((swap_size_bytes | int) / (installation_disk.sectorsize | int)) | int }}"
-      root_start_sector: "{{ (partition_info.swap_start_sector + partition_info.swap_sectors) | int }}"
+    efi_start_sector: "{{ start_sector | int }}"
+    efi_sectors: "{{ ((efi_size_bytes | int) / (installation_disk.sectorsize | int)) | int }}"
+
+- name: Set swap partition info
+  ansible.builtin.set_fact:
+    swap_start_sector: "{{ (efi_start_sector + efi_sectors) | int }}"
+    swap_sectors: "{{ ((swap_size_bytes | int) / (installation_disk.sectorsize | int)) | int }}"
+
+- name: Set root partition info
+  ansible.builtin.set_fact:
+    root_start_sector: "{{ (swap_start_sector + swap_sectors) | int }}"
 
 - name: Partition the device
   ansible.builtin.shell:
     cmd: |
       echo "label: gpt" | sfdisk {{ installation_device }} && \
-        echo "{{ partition_info.efi_start_sector }} {{ partition_info.efi_sectors }} U -" | sfdisk {{ installation_device }} --append && \
-        echo "{{ partition_info.swap_start_sector }} {{ partition_info.swap_sectors }} S -" | sfdisk {{ installation_device }} --append && \
-        echo "{{ partition_info.root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
+        echo "{{ efi_start_sector }} {{ efi_sectors }} U -" | sfdisk {{ installation_device }} --append && \
+        echo "{{ swap_start_sector }} {{ swap_sectors }} S -" | sfdisk {{ installation_device }} --append && \
+        echo "{{ root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
 
 - name: Execute partprobe
   ansible.builtin.shell:
