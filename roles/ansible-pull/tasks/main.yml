@@ -55,9 +55,9 @@
   ansible.builtin.shell:
     cmd: |
       echo "label: gpt" | sfdisk {{ installation_device }} && \
-        echo "{{ efi_start_sector }} {{ efi_sectors }} U -" | sfdisk {{ installation_device }} --append && \
-        echo "{{ swap_start_sector }} {{ swap_sectors }} S -" | sfdisk {{ installation_device }} --append && \
-        echo "{{ root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
+        echo "{{ partition_info.efi_start_sector }} {{ partition_info.efi_sectors }} U -" | sfdisk {{ installation_device }} --append && \
+        echo "{{ partition_info.swap_start_sector }} {{ partition_info.swap_sectors }} S -" | sfdisk {{ installation_device }} --append && \
+        echo "{{ partition_info.root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
 
 - name: Execute partprobe
   ansible.builtin.shell:
