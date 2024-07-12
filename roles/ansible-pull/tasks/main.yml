@@ -20,6 +20,14 @@
   ansible.builtin.set_fact:
     installation_disk: "{{ installation_disk[0] }}"
 
+- name: Combine Ansible device info
+  ansible.builtin.set_fact:
+    installation_disk: "{{ installation_disk | ansible.builtin.combine(hostvars[inventory_hostname].ansible_devices[installation_disk.name]) }}"
+
+- name: Show installation disk
+  ansible.builtin.debug:
+    msg: "Installation disk: {{ installation_disk }}."
+
 - name: Set installation device path
   ansible.builtin.set_fact:
     installation_device: "/dev/{{ installation_disk.name }}"
@@ -34,6 +42,3 @@
       sgdisk -Z {{ installation_device }}
   changed_when: false
 
-- name: Show installation device
-  ansible.builtin.debug:
-    msg: "Installation will continue on {{ hostvars[inventory_hostname].ansible_devices[installation_disk.name] }}."
