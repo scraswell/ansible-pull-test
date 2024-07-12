@@ -20,9 +20,10 @@
   tags:
     - bootstrap_debian
 
-- name: Prepare for reboot
-  block:
-    - name: Unmount filesystems
-      ansible.builtin.include_tasks: unmount_installation_medium.yml
-  tags:
-    - reboot_prep
+# - name: Prepare for reboot
+#   block:
+#     - name: Unmount filesystems
+#       ansible.builtin.include_tasks: unmount_installation_medium.yml
+#   tags:
+#     - reboot_prep
+# 
