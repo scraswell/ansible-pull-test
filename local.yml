@@ -1,0 +1,5 @@
+- name: Execute Ansible Pull
+  hosts: all
+  roles:
+    - role: ansible-pull
+      ansible_pull_url: https://github.com/scraswell/ansible-pull-test.git
