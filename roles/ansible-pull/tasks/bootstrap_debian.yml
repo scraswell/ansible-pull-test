@@ -4,7 +4,7 @@
     cmd: |
       pacman -S --noconfirm debootstrap
 
-- name: debootstrap
+- name: Perform bootstrap
   ansible.builtin.shell:
     cmd: |
       debootstrap \
@@ -12,3 +12,8 @@
         --variant=minbase \
         {{ debian_code_name }} \
         /mnt
+
+- name: Install base packages
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot /mnt apt -y install {{ debian_base_packages | join(' ') }}
