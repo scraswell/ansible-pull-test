@@ -1,2 +1,7 @@
-efi_size: 300
-swap_size: 4
+efi_size_mib: 300
+efi_size_bytes: "{{ efi_size_mib * 1024 * 1024 }}"
+
+swap_size_gib: 4
+swap_size_bytes: "{{ 4 * 1024 * 1024 * 1024 }}"
+
+start_sector: 2048

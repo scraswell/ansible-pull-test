@@ -30,7 +30,7 @@
 
 - name: Set installation device path
   ansible.builtin.set_fact:
-    installation_device: "/dev/{{ installation_disk.name }}"
+    installation_device: "/dev/{{ c.name }}"
 
 - name: Show installation device
   ansible.builtin.debug:
@@ -42,3 +42,24 @@
       sgdisk -Z {{ installation_device }}
   changed_when: false
 
+- name: Set partition info
+  ansible.builtin.set_fact:
+    partition_info:
+      efi_start_sector: "{{ start_sector | int }}"
+      efi_sectors: "{{ (efi_size_bytes / installation_disk.sectorsize) | int }}"
+      swap_start_sector: "{{ (efi_start_sector + efi_sectors) | int }}"
+      swap_sectors: "{{ (swap_size_bytes / installation_disk.sectorsize) | int }}"
+      root_start_sector: "{{ (swap_start_sector + swap_sectors) | int }}"
+
+- name: Partition the device
+  ansible.builtin.shell:
+    cmd: |
+      echo "label: gpt" | sfdisk {{ installation_device }} && \
+        echo "{{ efi_start_sector }} {{ efi_sectors }} U -" | sfdisk {{ installation_device }} --append && \
+        echo "{{ swap_start_sector }} {{ swap_sectors }} S -" | sfdisk {{ installation_device }} --append && \
+        echo "{{ root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
+
+- name: Execute partprobe
+  ansible.builtin.shell:
+    cmd: |
+      partprobe
