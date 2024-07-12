@@ -32,6 +32,8 @@
   ansible.builtin.shell:
     cmd: |
       sgdisk -Z {{ installation_device }}
+  register: zap_disk_result
+  changed_when: zap_disk_result.rc != 0
 
 - name: Show installation device
   ansible.builtin.debug:
