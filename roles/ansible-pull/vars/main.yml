@@ -44,7 +44,6 @@ debian_base_packages:
   - intel-microcode
   - iproute2
   - iptables
-  - iptables
   - iputils-ping
   - iso-codes
   - ispell

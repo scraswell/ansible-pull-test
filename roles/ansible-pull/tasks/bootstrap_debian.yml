@@ -22,15 +22,70 @@
     owner: root
     group: root
 
-- name: Install base packages
+- name: Initial update
   ansible.builtin.shell:
     cmd: |
       arch-chroot {{ bootstrap_dir }} apt -y {{ command }}
   loop:
     - update
     - upgrade
-    - install {{ debian_base_packages | join(' ') }}
   loop_control:
     loop_var: command
   environment:
     DEBIAN_FRONTEND: noninteractive
+
+- name: Install base packages
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} apt -y --no-install-recommends {{ debian_base_packages | join(' ') }}
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Configure clock
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} {{ command }}
+  loop:
+    - ln -sf /usr/share/zoneinfo/Canada/Atlantic /etc/localtime
+    - hwclock --systohc
+  loop_control:
+    loop_var: command
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Copy locale.gen
+  ansible.builtin.copy:
+    content: |
+      en_US.UTF-8 UTF-8
+    dest: "{{ bootstrap_dir }}/etc/locale.gen"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Generate locale
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} locale-gen
+
+- name: Copy locale.conf
+  ansible.builtin.copy:
+    content: |
+      LANG=en_US.UTF-8
+    dest: "{{ bootstrap_dir }}/etc/locale.conf"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Update locale
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} update-locale LANG=en_US.UTF-8 LANGUAGE
+
+- name: Copy issue
+  ansible.builtin.copy:
+    content: |
+      Debian GNU/Linux (\v) \n (\4) \l
+    dest: "{{ bootstrap_dir }}/etc/issue"
+    mode: 0644
+    owner: root
+    group: root
