@@ -30,7 +30,7 @@
 
 - name: Set installation device path
   ansible.builtin.set_fact:
-    installation_device: "/dev/{{ c.name }}"
+    installation_device: "/dev/{{ installation_disk.name }}"
 
 - name: Show installation device
   ansible.builtin.debug:
