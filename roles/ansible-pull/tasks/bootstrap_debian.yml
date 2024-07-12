@@ -30,5 +30,7 @@
     - update
     - upgrade
     - install {{ debian_base_packages | join(' ') }}
-  env:
+  loop_control:
+    loop_var: command
+  environment:
     DEBIAN_FRONTEND: noninteractive
