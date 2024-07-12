@@ -31,4 +31,4 @@
 
 - name: Show installation device
   ansible.builtin.debug:
-    msg: "Installation will continue on {{ hostvars[inventory_hostname].ansible_devices }}."
+    msg: "Installation will continue on {{ hostvars[inventory_hostname].ansible_devices[installation_disk[0].name] }}."
