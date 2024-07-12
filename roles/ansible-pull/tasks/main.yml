@@ -1,3 +1,12 @@
-- name: First task
+---
+- name: Find installation disk
+  ansible.builtin.shell:
+    cmd: |
+      lsblk -b --json | \
+        jq '.blockdevices[] | select (.type == "disk" and .ro == false and .size > (30 * 1024 * 1024 * 1024))'
+  register: installation_disk
+  changed_when: false
+
+- name: Show installation disk
   ansible.builtin.debug:
-    msg: "Hello world!"
+    msg: "{{ installation_disk }}"
