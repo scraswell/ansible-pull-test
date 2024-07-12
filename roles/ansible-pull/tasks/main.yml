@@ -70,6 +70,20 @@
         echo "{{ swap_start_sector }} {{ swap_sectors }} S -" | sfdisk {{ installation_device }} --append && \
         echo "{{ root_start_sector }} - L -" | sfdisk {{ installation_device }} --append
 
+- name: Set partition info
+    ansible.builtin.set_fact:
+      partition_info:
+        efi: "/dev/{{ installation_device }}1"
+        swap: "/dev/{{ installation_device }}2"
+        root: "/dev/{{ installation_device }}3"
+
+- name: Format the partitions
+  ansible.builtin.shell:
+    cmd: |
+      mkfs -t vfat {{ partition_info.efi }} && \
+      mkswap {{ partition_info.swap }} && \
+      mkfs -t ext4 -F {{ partition_info.root }}
+
 - name: Execute partprobe
   ansible.builtin.shell:
     cmd: |
