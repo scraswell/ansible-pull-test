@@ -3,10 +3,15 @@
   ansible.builtin.shell:
     cmd: |
       lsblk -b --json | \
-        jq '.blockdevices[] | select (.type == "disk" and .ro == false and .size > (30 * 1024 * 1024 * 1024))'
-  register: installation_disk
+        jq '[ .blockdevices[] | select (.type == "disk" and .ro == false and .size > (30 * 1024 * 1024 * 1024)) ]'
+  register: installation_disk_result
   changed_when: false
 
-- name: Show installation disk
-  ansible.builtin.debug:
-    msg: "{{ installation_disk }}"
+- name: Set installation disk
+  ansible.builtin.set_fact:
+    installation_disk: "{{ installation_disk_result.stdout|from_json }}"
+
+- name: Fail when unable to determine installation disk
+  ansible.builtin.fail:
+    msg: "Could not determine installation disk."
+  when: installation_disk | length != 1
