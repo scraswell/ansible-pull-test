@@ -3,6 +3,6 @@
   ansible.builtin.shell:
     cmd: |
       swapon {{ partition_info.swap }} && \
-      mount {{ partition_info.root }} /mnt && \
-      mkdir /mnt/boot && \
-      mount {{ partition_info.efi }} /mnt/boot
+      mount {{ partition_info.root }} {{ bootstrap_dir }} && \
+      mkdir {{ bootstrap_dir }}/boot && \
+      mount {{ partition_info.efi }} {{ bootstrap_dir }}/boot

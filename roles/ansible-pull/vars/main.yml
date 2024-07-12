@@ -1,3 +1,5 @@
+bootstrap_dir: /mnt
+
 efi_size_mib: 300
 efi_size_bytes: "{{ efi_size_mib * 1024 * 1024 }}"
 
