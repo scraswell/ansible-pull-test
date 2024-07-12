@@ -24,3 +24,11 @@
   ansible.builtin.debug:
     msg: "Installation will continue on {{ installation_device }}."
 
+- name: Clean the device
+  ansible.builtin.shell:
+    cmd: |
+      sgdisk -Z {{ installation_device }}
+
+- name: Show installation device
+  ansible.builtin.debug:
+    msg: "Installation will continue on {{ hostvars[inventory_hostname].ansible_devices }}."
