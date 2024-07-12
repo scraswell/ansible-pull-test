@@ -13,6 +13,13 @@
   tags:
     - install_prep
 
+- name: Install Debian
+  block:
+    - name: Bootstrap Debian
+      ansible.builtin.include_tasks: bootstrap_debian.yml
+  tags:
+    - bootstrap_debian
+
 - name: Prepare for reboot
   block:
     - name: Unmount filesystems

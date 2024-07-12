@@ -1,0 +1,9 @@
+---
+- name: debootstrap
+  ansible.builtin.shell:
+    cmd: |
+      debootstrap \
+        --arch=amd64 \
+        --variant=minbase \
+        {{ debian_code_name }} \
+        /mnt

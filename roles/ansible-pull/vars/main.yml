@@ -5,3 +5,5 @@ swap_size_gib: 4
 swap_size_bytes: "{{ 4 * 1024 * 1024 * 1024 }}"
 
 start_sector: 2048
+
+debian_code_name: bookworm
