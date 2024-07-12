@@ -31,15 +31,11 @@
     - upgrade
   loop_control:
     loop_var: command
-  environment:
-    DEBIAN_FRONTEND: noninteractive
 
 - name: Install base packages
   ansible.builtin.shell:
     cmd: |
       arch-chroot {{ bootstrap_dir }} apt -y --no-install-recommends install {{ debian_base_packages | join(' ') }}
-  environment:
-    DEBIAN_FRONTEND: noninteractive
 
 - name: Configure clock
   ansible.builtin.shell:
@@ -50,8 +46,6 @@
     - hwclock --systohc
   loop_control:
     loop_var: command
-  environment:
-    DEBIAN_FRONTEND: noninteractive
 
 - name: Copy locale.gen
   ansible.builtin.copy:
