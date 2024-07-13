@@ -127,4 +127,4 @@
 - name: Update GRUB
   ansible.builtin.shell:
     cmd: |
-      update-grub2
+      update-grub
