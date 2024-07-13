@@ -16,3 +16,14 @@ umount /mnt/boot && \
         -e '{"network_ip_address": { "type": "dhcp" }}' \
         --skip-tags complete_installation
 ```
+
+```bash
+umount /mnt/boot && \
+    umount /mnt && \
+    swapoff /dev/sda2 && \
+    ansible-pull \
+        -i inventory \
+        --url https://github.com/scraswell/ansible-pull-test.git \
+        -e '{"network_ip_address": { "type": "dhcp" }}' \
+        --skip-tags complete_installation
+```
