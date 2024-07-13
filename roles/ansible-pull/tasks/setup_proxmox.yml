@@ -133,7 +133,7 @@
 
 - name: Create directory for nag screen remover
   ansible.builtin.file:
-    path: "{{ bootstrap_dir }}/opt/pve-nag-buster/install.sh"
+    path: "{{ bootstrap_dir }}/opt/pve-nag-buster"
     state: directory
     mode: 0755
     owner: root
