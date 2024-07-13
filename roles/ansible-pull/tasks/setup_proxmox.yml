@@ -92,7 +92,7 @@
 - name: Remove default kernel
   ansible.builtin.shell:
     cmd: |
-      arch-chroot {{ bootstrap_dir }} apt -y remove linux-image-amd64 'linux-image-6.1*'
+      arch-chroot {{ bootstrap_dir }} apt -y remove linux-image-amd64 'linux-image-6.1*' os-prober
 
 - name: Update GRUB
   ansible.builtin.shell:
