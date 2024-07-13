@@ -4,7 +4,7 @@
     cmd: |
       swapon {{ partition_info.swap }} && \
       mount {{ partition_info.root }} {{ bootstrap_dir }} && \
-      mkdir {{ bootstrap_dir }}/boot && \
+      mkdir -pv {{ bootstrap_dir }}/boot && \
       mount {{ partition_info.efi }} {{ bootstrap_dir }}/boot
 
 - name: Get device UUIDs
