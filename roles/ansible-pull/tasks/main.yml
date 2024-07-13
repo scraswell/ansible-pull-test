@@ -73,6 +73,18 @@
   when:
     - init is defined and init
 
+- name: Setup proxmox
+  block:
+    - name: Setup proxmox
+      ansible.builtin.include_tasks: setup_proxmox.yml
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    PATH: /bin:/sbin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+  tags:
+    - setup_proxmox
+  when:
+    - proxmox is defined and proxmox
+
 - name: Complete installation
   block:
     - name: Complete installation

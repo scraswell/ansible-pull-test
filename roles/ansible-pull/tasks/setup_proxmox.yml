@@ -1,0 +1,100 @@
+---
+- name: Set hostname
+  ansible.builtin.copy:
+    content: |
+      {{ hostname | default('vmhost001') }}
+    dest: "{{ bootstrap_dir }}/etc/hostname"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Set hosts
+  ansible.builtin.copy:
+    content: |
+      127.0.0.1        localhost
+      ::1              localhost
+      {{ network_ip_address.address }}        {{ hostname | default('vmhost001') }} {{ hostname | default('vmhost001') }}.{{ domain | default('at.home') }}
+    dest: "{{ bootstrap_dir }}/etc/hosts"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Configure network interfaces
+  ansible.builtin.copy:
+    content: |
+      auto lo
+      iface lo inet loopback
+
+      iface {{ main_if }} inet manual
+
+      auto vmbr0
+      iface vmbr0 inet {{ network_ip_address.type }}
+          address {{ network_ip_address.address }}
+          gateway {{ network_ip_address.gateway }}
+          broadcast {{ network_ip_address.broadcast }}
+          bridge-ports {{ main_if }}
+          bridge-stp off
+          bridge-fd 0
+
+    dest: "{{ bootstrap_dir }}/etc/network/interfaces"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Configure resolv.conf
+  ansible.builtin.copy:
+    content: |
+      nameserver 192.168.122.1
+
+    dest: "{{ bootstrap_dir }}/etc/resolv.conf"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Add proxmox source
+  ansible.builtin.copy:
+    content: |
+      deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription
+
+    dest: /etc/apt/sources.list.d/pve-install-repo.list
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Add proxmox GPG key
+  ansible.builtin.get_url:
+    url: https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg
+    dest: /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
+    checksum: sha512:7da6fe34168adc6e479327ba517796d4702fa2f8b4f0a9833f5ea6e6b48f6507a6da403a274fe201595edc86a84463d50383d07f64bdde2e3658108db7d6dc87
+
+- name: Update repositories
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} apt -y {{ command }}
+  loop:
+    - update
+    - full-upgrade
+  loop_control:
+    loop_var: command
+
+- name: Install proxmox-ve
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} apt -y install {{ packages | join(' ') }}
+  vars:
+    proxmox_packages:
+      - proxmox-default-kernel
+      - proxmox-ve
+      - postfix
+      - open-iscsi
+      - chrony
+
+- name: Remove default kernel
+  ansible.builtin.shell:
+    cmd: |
+      arch-chroot {{ bootstrap_dir }} apt -y remove linux-image-amd64 'linux-image-6.1*'
+
+- name: Update GRUB
+  ansible.builtin.shell:
+    cmd: |
+      update-grub2

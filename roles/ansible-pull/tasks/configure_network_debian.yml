@@ -83,3 +83,5 @@
     mode: 0644
     owner: root
     group: root
+  when: network_ip_address.type == 'static'
+
