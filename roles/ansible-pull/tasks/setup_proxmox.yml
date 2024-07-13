@@ -5,7 +5,7 @@
       rm -rfv {{ bootstrap_dir }}/boot/pve && \
         mkdir -pv {{ bootstrap_dir }}/boot/pve && \
         mkdir -pv {{ bootstrap_dir }}/mnt/pve && \
-        mount --bind {{ bootstrap_dir }}/boot/pve {{ bootstrap_dir }}/mnt/pve
+        mount --bind {{ bootstrap_dir }}/mnt/pve {{ bootstrap_dir }}/boot/pve
   changed_when: false
 
 - name: Generate /etc/fstab
@@ -21,7 +21,7 @@
       UUID={{ (device_info | selectattr('fstype','equalto','swap') | first).uuid }}	none      	swap      	defaults  	0 0
 
       # /mnt/pve
-      /boot/pve    /mnt/pve   none    defaults,bind   0,0
+      /mnt/pve    /boot/pve   none    defaults,bind   0,0
 
     dest: "{{ bootstrap_dir }}/etc/fstab"
     mode: 0644
