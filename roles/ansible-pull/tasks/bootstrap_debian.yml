@@ -113,7 +113,7 @@
 - name: Set hostname
   ansible.builtin.copy:
     content: |
-      debian
+      {{ hostname | default('debian') }}
     dest: "{{ bootstrap_dir }}/etc/hostname"
     mode: 0644
     owner: root
