@@ -35,6 +35,7 @@ umount /mnt/boot && \
     ansible-pull \
         -i inventory \
         --url https://github.com/scraswell/ansible-pull-test.git \
+        -e '{"init":true}' \
         -e '{"proxmox":true}' \
         --skip-tags complete_installation
 ```
