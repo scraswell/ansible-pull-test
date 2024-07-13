@@ -72,26 +72,6 @@
   loop_control:
     loop_var: vimrc_dest
 
-- name: Set hostname
-  ansible.builtin.copy:
-    content: |
-      {{ hostname | default('debian') }}
-    dest: "{{ bootstrap_dir }}/etc/hostname"
-    mode: 0644
-    owner: root
-    group: root
-
-- name: Set hosts
-  ansible.builtin.copy:
-    content: |
-      127.0.0.1        localhost
-      ::1              localhost
-      127.0.1.1        {{ hostname | default('debian') }} {{ hostname | default('debian') }}.{{ domain | default('at.home') }}
-    dest: "{{ bootstrap_dir }}/etc/hosts"
-    mode: 0644
-    owner: root
-    group: root
-
 - name: Set root password
   ansible.builtin.shell:
     cmd: |

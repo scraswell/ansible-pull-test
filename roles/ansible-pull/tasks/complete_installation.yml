@@ -1,0 +1,29 @@
+---
+- name: Generate /etc/fstab
+  ansible.builtin.copy:
+    content: |
+      # {{ partition_info.root }}
+      UUID={{ (device_info | selectattr('fstype','equalto','ext4') | first).uuid }}	/         	ext4      	rw,relatime	0 1
+
+      # {{ partition_info.efi }}
+      UUID={{ (device_info | selectattr('fstype','equalto','vfat') | first).uuid }}                            	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+      # {{ partition_info.swap }}
+      UUID={{ (device_info | selectattr('fstype','equalto','swap') | first).uuid }}	none      	swap      	defaults  	0 0
+
+    dest: "{{ bootstrap_dir }}/etc/fstab"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Unmount devices
+  ansible.builtin.shell:
+    cmd: |
+      umount {{ partition_info.efi }} && \
+      umount {{ partition_info.root }} && \
+      swapoff {{ partition_info.swap }}
+
+- name: Reboot system
+  ansible.builtin.shell:
+    cmd: |
+      reboot

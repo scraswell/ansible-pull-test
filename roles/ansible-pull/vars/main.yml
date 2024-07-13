@@ -8,6 +8,12 @@ swap_size_bytes: "{{ swap_size_gib * 1024 * 1024 * 1024 }}"
 
 start_sector: 2048
 
+network_ip_address:
+  type: static
+  address: 192.168.123.47/23
+  gateway: 192.168.122.1
+  broadcast: 192.168.123.255
+
 debian_code_name: bookworm
 debian_base_packages:
   - anacron
@@ -24,6 +30,7 @@ debian_base_packages:
   - curl
   - dbus
   - debian-faq
+  - dhcp-client
   - dictionaries-common
   - discover
   - discover-data

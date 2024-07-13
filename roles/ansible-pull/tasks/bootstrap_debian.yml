@@ -36,30 +36,3 @@
   ansible.builtin.shell:
     cmd: |
       arch-chroot {{ bootstrap_dir }} apt -y --no-install-recommends install {{ debian_base_packages | join(' ') }}
-
-- name: Install GRUB
-  ansible.builtin.shell:
-    cmd: |
-      arch-chroot {{ bootstrap_dir }} grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-
-- name: Create GRUB config
-  ansible.builtin.shell:
-    cmd: |
-      arch-chroot {{ bootstrap_dir }} update-grub2
-
-- name: Generate /etc/fstab
-  ansible.builtin.copy:
-    content: |
-      # {{ partition_info.root }}
-      UUID={{ (device_info | selectattr('fstype','equalto','ext4') | first).uuid }}	/         	ext4      	rw,relatime	0 1
-
-      # {{ partition_info.efi }}
-      UUID={{ (device_info | selectattr('fstype','equalto','vfat') | first).uuid }}                            	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
-
-      # {{ partition_info.swap }}
-      UUID={{ (device_info | selectattr('fstype','equalto','swap') | first).uuid }}	none      	swap      	defaults  	0 0
-
-    dest: "{{ bootstrap_dir }}/etc/fstab"
-    mode: 0644
-    owner: root
-    group: root
