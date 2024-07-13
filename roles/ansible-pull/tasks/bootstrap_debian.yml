@@ -124,7 +124,7 @@
     content: |
       127.0.0.1        localhost
       ::1              localhost
-      127.0.1.1        {{ hostname }} {{ hostname }}.{{ domain }}
+      127.0.1.1        {{ hostname | default('debian') }} {{ hostname | default('debian') }}.{{ domain | default('at.home') }}
     dest: "{{ bootstrap_dir }}/etc/hostname"
     mode: 0644
     owner: root
