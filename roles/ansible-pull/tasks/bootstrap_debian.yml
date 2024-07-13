@@ -84,6 +84,66 @@
     owner: root
     group: root
 
+- name: Create .vimrc
+  ansible.builtin.copy:
+    content: |
+      :set encoding=utf-8
+      :set tabstop=4
+      :set shiftwidth=4
+      :set softtabstop=4
+      :set expandtab
+      :set nowrap
+      :set number
+      :set ruler
+      :set nobackup
+      :set noundofile
+      :set smartindent
+      :filetype indent on
+      :syntax on
+    dest: "{{ vimrc_dest }}"
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - "{{ bootstrap_dir }}/root/.vimrc"
+    - "{{ bootstrap_dir }}/etc/skel/.vimrc"
+  loop_control:
+    loop_var: vimrc_dest
+
+- name: Set hostname
+  ansible.builtin.copy:
+    content: |
+      debian
+    dest: "{{ bootstrap_dir }}/etc/hostname"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Set hosts
+  ansible.builtin.copy:
+    content: |
+      127.0.0.1        localhost
+      ::1              localhost
+      127.0.1.1        {{ hostname }} {{ hostname }}.{{ domain }}
+    dest: "{{ bootstrap_dir }}/etc/hostname"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Set root password
+  ansible.builtin.shell:
+    cmd: |
+      echo "root:password" | arch-chroot {{ bootstrap_dir }} chpasswd
+
+- name: Configure sudoers
+  ansible.builtin.copy:
+    content: |
+      %sudo ALL=(ALL) NOPASSWD: ALL
+    dest: "{{ bootstrap_dir }}/etc/sudoers.d/99-wheel_no_passwd"
+    mode: 0644
+    owner: root
+    group: root
+
 - name: Install GRUB
   ansible.builtin.shell:
     cmd: |
