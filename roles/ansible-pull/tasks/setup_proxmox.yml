@@ -31,7 +31,7 @@
 - name: Set hostname
   ansible.builtin.copy:
     content: |
-      {{ hostname | default('vmhost001') }}
+      {{ hostname | default('vmhost002') }}
     dest: "{{ bootstrap_dir }}/etc/hostname"
     mode: 0644
     owner: root
@@ -42,7 +42,7 @@
     content: |
       127.0.0.1        localhost
       ::1              localhost
-      {{ network_ip_address.address }}        {{ hostname | default('vmhost001') }} {{ hostname | default('vmhost001') }}.{{ domain | default('at.home') }}
+      {{ network_ip_address.address }}        {{ hostname | default('vmhost002') }} {{ hostname | default('vmhost002') }}.{{ domain | default('at.home') }}
     dest: "{{ bootstrap_dir }}/etc/hosts"
     mode: 0644
     owner: root
