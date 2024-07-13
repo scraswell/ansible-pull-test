@@ -30,7 +30,6 @@ debian_base_packages:
   - curl
   - dbus
   - debian-faq
-  - dhcp-client
   - dictionaries-common
   - discover
   - discover-data
@@ -55,6 +54,7 @@ debian_base_packages:
   - iproute2
   - iptables
   - iputils-ping
+  - isc-dhcp-client
   - iso-codes
   - ispell
   - jq
