@@ -143,7 +143,7 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/install.sh
     dest: "{{ bootstrap_dir }}/opt/pve-nag-buster/install.sh"
-    checksum: sha512:7da6fe34168adc6e479327ba517796d4702fa2f8b4f0a9833f5ea6e6b48f6507a6da403a274fe201595edc86a84463d50383d07f64bdde2e3658108db7d6dc87
+    checksum: sha512:3292b612c4da640368fe91b7ea9b5d693bb10f3f4c80a7e9945ca8f56c1541f11010d293084567e956bef34cc286dc22981aecd3dcfc54262bd9a6e9bde950bb
     mode: 0755
     owner: root
     group: root
