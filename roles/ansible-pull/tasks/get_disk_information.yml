@@ -1,0 +1,17 @@
+---
+- name: Execute partprobe
+  ansible.builtin.shell:
+    cmd: |
+      partprobe
+  changed_when: false
+
+- name: Read partition table
+  ansible.builtin.shell:
+    cmd: |
+      sfdisk -l --json {{ installation_device }}
+  register: partition_table_result
+  changed_when: false
+
+- name: Set partition table
+  ansible.builtin.set_fact:
+    partition_table: "{{ (partition_table_result.stdout | from_json).partitiontable }}"
