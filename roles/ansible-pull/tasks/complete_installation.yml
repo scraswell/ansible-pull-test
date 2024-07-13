@@ -22,7 +22,7 @@
 - name: Unmount devices
   ansible.builtin.shell:
     cmd: |
-      umount {{ partition_info.efi }}/pve
+      umount {{ bootstrap_dir }}/boot/pve
   when:
     - proxmox is defined
     - proxmox
