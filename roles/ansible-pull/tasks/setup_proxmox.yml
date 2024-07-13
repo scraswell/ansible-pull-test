@@ -92,7 +92,7 @@
 
 - name: Remove proxmox enterprise source
   ansible.builtin.file:
-    src: "{{ bootstrap_dir }}/etc/apt/sources.list.d/pve-enterprise.list"
+    path: "{{ bootstrap_dir }}/etc/apt/sources.list.d/pve-enterprise.list"
     state: absent
 
 - name: Add proxmox GPG key
@@ -126,7 +126,7 @@
 
 - name: Remove proxmox enterprise source
   ansible.builtin.file:
-    src: "{{ bootstrap_dir }}/etc/apt/sources.list.d/pve-enterprise.list"
+    path: "{{ bootstrap_dir }}/etc/apt/sources.list.d/pve-enterprise.list"
     state: absent
 
 - name: Remove default kernel
