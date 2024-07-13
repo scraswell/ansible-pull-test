@@ -21,13 +21,13 @@
   ansible.builtin.copy:
     content: |
       # {{ partition_info.root }}
-      UUID={{ (device_info | select_attr('fstype','equalto','ext4') | first).uuid }}	/         	ext4      	rw,relatime	0 1
+      UUID={{ (device_info | selectattr('fstype','equalto','ext4') | first).uuid }}	/         	ext4      	rw,relatime	0 1
 
       # {{ partition_info.efi }}
-      UUID={{ (device_info | select_attr('fstype','equalto','vfat') | first).uuid }}                            	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+      UUID={{ (device_info | selectattr('fstype','equalto','vfat') | first).uuid }}                            	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
 
       # {{ partition_info.swap }}
-      UUID={{ (device_info | select_attr('fstype','equalto','swap') | first).uuid }}	none      	swap      	defaults  	0 0
+      UUID={{ (device_info | selectattr('fstype','equalto','swap') | first).uuid }}	none      	swap      	defaults  	0 0
 
     dest: "{{ bootstrap_dir }}/etc/fstab"
     mode: 0644
