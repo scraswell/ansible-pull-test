@@ -42,3 +42,14 @@
       efi: "{{ installation_device }}1"
       swap: "{{ installation_device }}2"
       root: "{{ installation_device }}3"
+
+- name: Set interface info
+  ansible.builtin.set_fact:
+    network_interfaces: "{{ hostvars[inventory_hostname].ansible_interfaces }}"
+
+- name: Set individual interface info
+  ansible.builtin.set_fact:
+    network_interface: "{{ network_interface | default([]) + [ hostvars[inventory_hostname]['ansible_'+interface] ] }}"
+  loop: "{{ network_interfaces }}"
+  loop_control:
+    loop_var: interface
