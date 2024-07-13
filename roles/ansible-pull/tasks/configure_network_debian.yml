@@ -1,13 +1,4 @@
 ---
-- name: Find main inteface
-  ansible.builtin.set_fact:
-    main_if: "{{ network_interface[current_if].device }}"
-  loop: "{{ network_interfaces }}"
-  loop_control:
-    loop_var: current_if
-  when:
-    network_interface[current_if].active and network_interface[current_if].device != "lo"
-
 - name: Configure network interfaces
   ansible.builtin.copy:
     content: |

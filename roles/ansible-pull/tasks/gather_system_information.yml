@@ -49,7 +49,16 @@
 
 - name: Set individual interface info
   ansible.builtin.set_fact:
-    network_interface: "{{ network_interface | default([]) + [ hostvars[inventory_hostname]['ansible_'+interface] ] }}"
+    network_interface: "{{ network_interface | default({}) | combine ( { interface: hostvars[inventory_hostname]['ansible_'+interface] } ) }}"
   loop: "{{ network_interfaces }}"
   loop_control:
     loop_var: interface
+
+- name: Find main inteface
+  ansible.builtin.set_fact:
+    main_if: "{{ network_interface[current_if].device }}"
+  loop: "{{ network_interfaces }}"
+  loop_control:
+    loop_var: current_if
+  when:
+    network_interface[current_if].active and network_interface[current_if].device != "lo"
