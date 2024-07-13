@@ -3,7 +3,8 @@
   ansible.builtin.shell:
     cmd: |
       rm -rfv /boot/pve && \
-      mkdir -pv /mnt/pve && \
+        mkdir -pv /boot/pve && \
+        mkdir -pv /mnt/pve && \
         mount --bind /mnt/pve /boot/pve
   changed_when: false
 
