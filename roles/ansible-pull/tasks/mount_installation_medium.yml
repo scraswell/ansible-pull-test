@@ -10,7 +10,7 @@
 - name: Get device UUIDs
   ansible.builtin.shell:
     cmd: |
-      lsblk -f --json | jq '.blockdevices[] | select (.name == "{{ installation_device }}") | .children'
+      lsblk -f --json | jq '.blockdevices[] | select (.name == "{{ installation_disk.name }}") | .children'
   register: get_uuid_result
 
 - name: Set device info
