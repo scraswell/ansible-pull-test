@@ -37,6 +37,16 @@
   tags:
     - bootstrap_debian
 
+- name: Configure Network Debian
+  block:
+    - name: Configure Network
+      ansible.builtin.include_tasks: configure_network_debian.yml
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    PATH: /bin:/sbin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+  tags:
+    - bootstrap_debian
+
 # - name: Prepare for reboot
 #   block:
 #     - name: Unmount filesystems
