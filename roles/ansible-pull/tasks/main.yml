@@ -76,6 +76,6 @@
 - name: Complete installation
   block:
     - name: Complete installation
-      ansible.builtin.include_tasks: unmount_installation_medium.yml
+      ansible.builtin.include_tasks: complete_installation.yml
   tags:
     - complete_installation
