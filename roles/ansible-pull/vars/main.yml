@@ -33,6 +33,7 @@ debian_base_packages:
   - dnsutils
   - doc-debian
   - efibootmgr
+  - ethtool
   - fdisk
   - gdisk
   - file
