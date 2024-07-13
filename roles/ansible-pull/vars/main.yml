@@ -42,7 +42,7 @@ debian_base_packages:
   - iamerican
   - ibritish
   - ienglish-common
-  - ifupdown
+  - ifupdown2
   - intel-microcode
   - iproute2
   - iptables
