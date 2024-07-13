@@ -15,6 +15,9 @@
     mode: 0644
     owner: root
     group: root
+  when:
+    - proxmox is undefined
+    - not proxmox
 
 - name: Unmount devices
   ansible.builtin.shell:
