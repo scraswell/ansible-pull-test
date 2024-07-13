@@ -80,7 +80,7 @@
 - name: Install proxmox-ve
   ansible.builtin.shell:
     cmd: |
-      arch-chroot {{ bootstrap_dir }} apt -y install {{ packages | join(' ') }}
+      arch-chroot {{ bootstrap_dir }} apt -y install {{ proxmox_packages | join(' ') }}
   vars:
     proxmox_packages:
       - proxmox-default-kernel
