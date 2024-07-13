@@ -58,7 +58,7 @@
 
       auto vmbr0
       iface vmbr0 inet {{ network_ip_address.type }}
-          address {{ network_ip_address.address }}
+          address {{ network_ip_address.address }}/{{ network_ip_address.mask_length }}
           gateway {{ network_ip_address.gateway }}
           broadcast {{ network_ip_address.broadcast }}
           bridge-ports {{ main_if }}

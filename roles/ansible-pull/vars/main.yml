@@ -10,7 +10,8 @@ start_sector: 2048
 
 network_ip_address:
   type: static
-  address: 192.168.123.47/23
+  address: 192.168.123.47
+  mask_length: 23
   gateway: 192.168.122.1
   broadcast: 192.168.123.255
 
