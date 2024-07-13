@@ -112,7 +112,6 @@
     - full-upgrade
   loop_control:
     loop_var: command
-  ignore_errors: true
 
 - name: Install proxmox-ve
   ansible.builtin.shell:
