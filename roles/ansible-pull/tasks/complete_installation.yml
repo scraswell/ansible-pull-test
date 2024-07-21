@@ -16,8 +16,7 @@
     owner: root
     group: root
   when:
-    - proxmox is undefined
-    - not proxmox
+    - proxmox is undefined or (proxmox is defined and (not proxmox))
 
 - name: Unmount devices
   ansible.builtin.shell:
