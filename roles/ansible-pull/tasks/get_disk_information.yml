@@ -2,7 +2,7 @@
 - name: Execute partprobe
   ansible.builtin.shell:
     cmd: |
-      partprobe
+      partprobe {{ installation_device }}
   changed_when: false
 
 - name: Read partition table
