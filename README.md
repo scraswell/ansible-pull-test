@@ -2,6 +2,8 @@
 
 ```bash
 pacman -Sy --noconfirm && \
+    pacman-key --init && \
+    pacman-key --populate && \
     pacman -S --noconfirm ansible git jq
 ```
 

@@ -5,7 +5,6 @@
       arch-chroot {{ bootstrap_dir }} {{ command }}
   loop:
     - ln -sf /usr/share/zoneinfo/Canada/Atlantic /etc/localtime
-    - hwclock --systohc
   loop_control:
     loop_var: command
 

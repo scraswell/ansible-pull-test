@@ -36,3 +36,7 @@
   ansible.builtin.shell:
     cmd: |
       arch-chroot {{ bootstrap_dir }} apt -y --no-install-recommends install {{ debian_base_packages | join(' ') }}
+  retries: 10
+  delay: 3
+  register: result
+  until: result.rc == 0
